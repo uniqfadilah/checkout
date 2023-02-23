@@ -1,91 +1,43 @@
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from './page.module.css'
+"use client";
+import React, {  useEffect, useMemo } from "react";
+import Icon from "./component/Icon";
+import StageOne from "./component/StageOne";
+import StageThree from "./component/StageThree";
+import StageTwo from "./component/StageTwo";
+import useInfo from "@/store/useInfo";
+import Asside from "./component/Asside";
+import Breadcrumb from "./component/Breadcrumb";
+const page = () => {
 
-const inter = Inter({ subsets: ['latin'] })
+  const {data} = useInfo((state) => state)
 
-export default function Home() {
+  useEffect(()=>{
+    console.log(data)
+  },[data])
+  const sectionTitle = useMemo(() => {
+    if (data.step === 0)
+      return <StageOne/>
+    if(data.step === 1)
+      return <StageTwo/>
+    return <StageThree/>
+
+  }, [data.step]);
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className=" bg-[#FFFAE6] w-full py-12 h-screen ">
+      <div className="container mx-auto bg-white h-full flex flex-col rounded shadow-xl px-6 relative">
+        
+     <Breadcrumb/>
+        <button className="flex pt-8 space-x-2  outline-none">
+          <Icon type="ri-arrow-left-line" />
+          <p>Back to cart</p>
+        </button>
+        <div className="flex  mt-6 h-full">
+        {sectionTitle}
+          <Asside/>
         </div>
       </div>
+    </div>
+  );
+};
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default page;
